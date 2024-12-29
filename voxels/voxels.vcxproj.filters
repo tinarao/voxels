@@ -21,6 +21,9 @@
     <ClCompile Include="block.hpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="chunk_manager.hpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chunk.hpp">

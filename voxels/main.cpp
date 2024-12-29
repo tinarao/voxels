@@ -1,6 +1,5 @@
 #include <raylib.h>
-#include "block.hpp"
-#include <vector>
+#include "chunk_manager.hpp"
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -9,7 +8,7 @@ int main() {
 	InitWindow(screenWidth, screenHeight, "Minceraft");
 	
 	Camera3D camera = { 0 };
-	camera.position = Vector3{ 10.0f, 10.0f, 10.0f };
+	camera.position = Vector3{ 100.0f, 100.0f, 100.0f };
 	camera.target = Vector3{ 0.0f, 0.0f, 0.0f };
 	camera.up = Vector3{ 0.0f, 1.0f, 0.0f };
 	camera.fovy = 45.0f;
@@ -18,6 +17,8 @@ int main() {
 	DisableCursor();
 	SetTargetFPS(60);
 
+	ChunkManager* cm = new ChunkManager(&camera);
+
 	while (!WindowShouldClose()) {
 		UpdateCamera(&camera, CAMERA_FREE);
 
@@ -25,7 +26,9 @@ int main() {
 		ClearBackground(RAYWHITE);
 		BeginMode3D(camera);
 
-		// Loop
+
+			cm->Update();
+
 
 		EndMode3D();
 		EndDrawing();

@@ -1,3 +1,4 @@
+#pragma once
 #include <raylib.h>
 
 const float BASIC_BLOCK_SIZE = 1.0f;
@@ -18,23 +19,18 @@ public:
 		this->position = pos;
 	};
 
-	bool IsActive() const {
-		return this->is_active;
-	};
-
-	void SetActive(bool active) {
-		this->is_active = active;
+	Vector3 GetPosition() const {
+		return this->position;
 	}
 
 	void Draw() const {
 		DrawCube(this->position, BASIC_BLOCK_SIZE, BASIC_BLOCK_SIZE, BASIC_BLOCK_SIZE, this->color);
 		if (this->is_wires_enabled) {
-			DrawCubeWires(this->position, BASIC_BLOCK_SIZE, BASIC_BLOCK_SIZE, BASIC_BLOCK_SIZE, MAROON);
+			DrawCubeWires(this->position, BASIC_BLOCK_SIZE, BASIC_BLOCK_SIZE, BASIC_BLOCK_SIZE, BLACK);
 		}
 	}
 
 private:
-	bool is_active;
 	bool is_wires_enabled = true;
 	Vector3 position;
 	Color color;
