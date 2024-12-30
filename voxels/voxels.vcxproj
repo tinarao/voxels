@@ -127,12 +127,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="block.hpp" />
-    <ClCompile Include="chunk_manager.hpp" />
+    <ClCompile Include="block.h" />
+    <ClCompile Include="chunk_manager.h" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="chunk.hpp" />
+    <ClInclude Include="chunk.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

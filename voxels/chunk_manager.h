@@ -2,8 +2,8 @@
 
 #include <raylib.h>
 #include <vector>
-#include "chunk.hpp"
 #include <iostream>
+#include "chunk.h"
 
 class ChunkManager {
 private:
@@ -14,22 +14,24 @@ public:
 	ChunkManager(Camera3D* cam) {
 		this->camera_ref = cam;
 		chunks.push_back(*new Chunk());
-
 	}
 
 	void Update() {
 		for (Chunk &chunk : this->chunks) {
 			Vector3 pos = chunk.blocks[0].GetPosition();
-			if (
-				((pos.x - this->camera_ref->position.x) >= 1.f) ||
-				((pos.y - this->camera_ref->position.y) >= 1.f) ||
-				((pos.z - this->camera_ref->position.z) >= 1.f)
-				) {
-				std::cout << "OUT OF VIEWPORT" << std::endl;
+			double distance = hypot(
+				hypot(
+					pos.x - this->camera_ref->position.x, pos.y - this->camera_ref->position.y
+				),
+				pos.z - this->camera_ref->position.z);
+
+			if (distance > static_cast<double>(100)) {
+				std::cout << "do something" << std::endl;
+				return;
 			}
-			else {
-				chunk.Draw();
-			}
+
+			chunk.Draw();
+
 		}
 	}
 };

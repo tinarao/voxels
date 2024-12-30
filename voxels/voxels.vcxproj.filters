@@ -18,15 +18,15 @@
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="block.hpp">
+    <ClCompile Include="block.h">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="chunk_manager.hpp">
+    <ClCompile Include="chunk_manager.h">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="chunk.hpp">
+    <ClInclude Include="chunk.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
