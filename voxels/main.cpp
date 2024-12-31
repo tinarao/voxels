@@ -17,9 +17,7 @@ int main() {
 	DisableCursor();
 	SetTargetFPS(60);
 
-	//ChunkManager* cm = new ChunkManager(&camera);
-
-	// GetColor
+	Chunk *ch = new Chunk();
 
 	while (!WindowShouldClose()) {
 		UpdateCamera(&camera, CAMERA_FREE);
@@ -28,14 +26,13 @@ int main() {
 		ClearBackground(RAYWHITE);
 		BeginMode3D(camera);
 
-			//cm->Update();
-		DrawBillboard(camera, tex, Vector3{ 0, 0, 0 }, 1, RAYWHITE);
-		
+		ch->Draw();
+		std::cout << "n";
 
 		EndMode3D();
 		EndDrawing();
 	}
 
 	CloseWindow();
-	return 1;
+	return 0;
 }
