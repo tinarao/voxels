@@ -4,9 +4,11 @@
 
 class Chunk {
 private:
+	static const int BASIC_BLUR_SIZE = 6;
 	std::vector<int> generate_height_map() {
 		std::vector <int> height_map;
 		Image perlin_image = GenImagePerlinNoise(BASE_CHUNK_SIZE, BASE_CHUNK_SIZE, 0, 0, 1);
+		ImageBlurGaussian(&perlin_image, BASIC_BLUR_SIZE);
 		Texture2D tex = LoadTextureFromImage(perlin_image);
 
 		for (int x = 0; x < perlin_image.height; x++) {
@@ -23,28 +25,11 @@ private:
 
 public:
 	static const int BASE_CHUNK_SIZE = 16;
-
-	/*
-		Algorithm:
-			1. Generate perlin multipliers array
-				Value = 0..100
-			2. Generate <value> blocks in vertical
-
-		Future:
-			1. ������������ ������� � �������� (chunks_amount * 16)
-			2. ������ �� ������� �� 16x16 �������� � ����������� 
-				� ��������� � �����
-			3. �������� �� ������ ���������� ����
-
-		�� ������ ������ ������ � �������� �����, ����� ����������
-	*/
-
 	std::vector<Block> blocks;
 
 	Chunk() {
 		std::vector<int> height_map = this->generate_height_map();
 		int hmap_idx_count = 0;
-		std::cout << "Height map size: " << height_map.size() << std::endl;
 
 		for (int x = 0; x <= BASE_CHUNK_SIZE; x++) {
 			for (int z = 0; z <= BASE_CHUNK_SIZE; z++) {
@@ -63,8 +48,6 @@ public:
 				}
 			}
 		}
-
-		std::cout << "Generated a chunk!" << std::endl;
 	}
 
 	~Chunk() {

@@ -8,10 +8,10 @@ int main() {
 	InitWindow(screenWidth, screenHeight, "Minceraft");
 	
 	Camera3D camera = { 0 };
-	camera.position = Vector3{ 0.0f, 0.0f, 99.0f };
+	camera.position = Vector3{ 35.0f, 60.0f, 55.0f };
 	camera.target = Vector3{ 0.0f, 0.0f, 0.0f };
-	camera.up = Vector3{ 0.0f, 1.0f, 0.0f };
-	camera.fovy = 45.0f;
+	camera.up = Vector3{ 0, 1.f, 0 };
+	camera.fovy = 65.0f;
 	camera.projection = CAMERA_PERSPECTIVE;
 
 	DisableCursor();
@@ -27,7 +27,6 @@ int main() {
 		BeginMode3D(camera);
 
 		ch->Draw();
-		std::cout << "n";
 
 		EndMode3D();
 		EndDrawing();
