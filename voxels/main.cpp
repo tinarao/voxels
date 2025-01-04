@@ -17,7 +17,9 @@ int main() {
 	DisableCursor();
 	SetTargetFPS(60);
 
-	Chunk *ch = new Chunk();
+	// Chunk *ch = new Chunk();
+	ChunkManager *cm = new ChunkManager(&camera);
+	cm->GenerateWorld();
 
 	while (!WindowShouldClose()) {
 		UpdateCamera(&camera, CAMERA_FREE);
@@ -26,7 +28,8 @@ int main() {
 		ClearBackground(RAYWHITE);
 		BeginMode3D(camera);
 
-		ch->Draw();
+		{
+		}
 
 		EndMode3D();
 		EndDrawing();
