@@ -5,13 +5,14 @@
 
 class Chunk {
 private:
+	Vector2 initial_position;
 	static const int BASE_CHUNK_SIZE = 16;
 	int height_map[BASE_CHUNK_SIZE][BASE_CHUNK_SIZE] = { 0 };
 
 public:
-	std::vector<Block> blocks;
+	std::vector<Block*> blocks;
 
-	Chunk(Image* perlin_image) {
+	Chunk(Image* perlin_image, Vector2 initial_pos) {
 		std::cout << "Perlin copy width" << perlin_image->width << std::endl;
 		assert(perlin_image->width == BASE_CHUNK_SIZE && perlin_image->height == BASE_CHUNK_SIZE);
 
@@ -20,7 +21,7 @@ public:
 				Color col = GetImageColor(*perlin_image, x, y);
 
 				int h_multiplier = (col.r + col.g + col.b) * 100 / 775;
-				this->height_map[y][x] = h_multiplier;
+				this->height_map[y][x] = h_multiplier / 10;
 			}
 		}
 
@@ -31,10 +32,13 @@ public:
 				int h_multiplier_val = this->height_map[z][x];
 
 				for (int y_blocks_count = 0; y_blocks_count < h_multiplier_val; y_blocks_count++) {
+					int block_x = x + initial_pos.x;
+					int block_z = z + initial_pos.y;
+
 					Block* block = new Block(Vector3{
-						float(x), float(y_blocks_count), float(z)
-						}, RED);
-					this->blocks.push_back(*block);
+						float(block_x), float(y_blocks_count), float(block_z)
+						}, DARKGRAY);
+					this->blocks.push_back(block);
 				}
 
 				if (hmap_idx_count == (BASE_CHUNK_SIZE * BASE_CHUNK_SIZE - 1)) {
@@ -52,8 +56,8 @@ public:
 	}
 
 	void Draw() {
-		for (Block& block : this->blocks) {
-			block.Draw();
+		for (const auto& block : this->blocks) {
+			block->Draw();
 		}
 	}
 };

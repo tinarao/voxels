@@ -1,8 +1,8 @@
 #include <raylib.h>
 #include "chunk_manager.h"
 
-const int screenWidth = 800;
-const int screenHeight = 450;
+const int screenWidth = 1200;
+const int screenHeight = 850;
 
 int main() {
 	InitWindow(screenWidth, screenHeight, "Minceraft");
@@ -17,8 +17,7 @@ int main() {
 	DisableCursor();
 	SetTargetFPS(60);
 
-	// Chunk *ch = new Chunk();
-	ChunkManager *cm = new ChunkManager(&camera);
+	ChunkManager *cm = new ChunkManager();
 	cm->GenerateWorld();
 
 	while (!WindowShouldClose()) {
@@ -28,13 +27,13 @@ int main() {
 		ClearBackground(RAYWHITE);
 		BeginMode3D(camera);
 
-		{
-		}
-
+		cm->Draw();
+		
 		EndMode3D();
 		EndDrawing();
 	}
 
+	delete cm;
 	CloseWindow();
 	return 0;
 }
