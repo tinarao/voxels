@@ -1,14 +1,16 @@
 #include <raylib.h>
-#include "chunk_manager.h"
+#include <format>
+#include <string>
+#include "chunk-manager.h"
 
 const int screenWidth = 1200;
 const int screenHeight = 850;
 
 int main() {
 	InitWindow(screenWidth, screenHeight, "Minceraft");
-	
+
 	Camera3D camera = { 0 };
-	camera.position = Vector3{ 35.0f, 60.0f, 55.0f };
+	camera.position = Vector3{ 95.0f, 20.0f, 55.0f };
 	camera.target = Vector3{ 0.0f, 0.0f, 0.0f };
 	camera.up = Vector3{ 0, 1.f, 0 };
 	camera.fovy = 65.0f;
@@ -17,19 +19,29 @@ int main() {
 	DisableCursor();
 	SetTargetFPS(60);
 
-	ChunkManager *cm = new ChunkManager();
+	auto* cm = new ChunkManager(&camera);
 	cm->GenerateWorld();
 
 	while (!WindowShouldClose()) {
 		UpdateCamera(&camera, CAMERA_FREE);
 
 		BeginDrawing();
-		ClearBackground(RAYWHITE);
+		ClearBackground(WHITE);
 		BeginMode3D(camera);
 
 		cm->Draw();
-		
+
 		EndMode3D();
+
+		DrawFPS(25, 25);
+        DrawText(
+                std::format("x: {}\ty: {}\tz: {}\n", (int)camera.position.x, (int)camera.position.y, (int)camera.position.z).c_str(),
+                25,
+                50,
+                18,
+                BLACK
+                );
+
 		EndDrawing();
 	}
 

@@ -13,7 +13,6 @@ public:
 	std::vector<Block*> blocks;
 
 	Chunk(Image* perlin_image, Vector2 initial_pos) {
-		std::cout << "Perlin copy width" << perlin_image->width << std::endl;
 		assert(perlin_image->width == BASE_CHUNK_SIZE && perlin_image->height == BASE_CHUNK_SIZE);
 
 		for (int x = 0; x < perlin_image->height; x++) {
@@ -32,12 +31,27 @@ public:
 				int h_multiplier_val = this->height_map[z][x];
 
 				for (int y_blocks_count = 0; y_blocks_count < h_multiplier_val; y_blocks_count++) {
+
+
+
+
+					bool is_renderable = true;
 					int block_x = x + initial_pos.x;
 					int block_z = z + initial_pos.y;
 
+
+
+
+
+
+					//if (x >= 1 && x <= 14) {
+					//	is_renderable = false;
+					//}
+
+
 					Block* block = new Block(Vector3{
 						float(block_x), float(y_blocks_count), float(block_z)
-						}, DARKGRAY);
+						}, DARKGRAY, is_renderable);
 					this->blocks.push_back(block);
 				}
 

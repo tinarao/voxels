@@ -1,31 +1,35 @@
 #include <raylib.h>
 #include <vector>
+#include <math.h>
 #include <iostream>
+#include "config.h"
 #include "chunk.h"
 #include <cassert>
 
+using namespace config;
+
 class ChunkManager {
 private:
-    const int BASIC_BLUR_SIZE = 5;
-
-    static const int CHUNK_WIDTH = 16;
-    static const int CHUNKS_TO_GENERATE = 64;
     std::vector<Chunk*> chunks;
+    Camera3D* camera_ref;
+
 public:
-    ChunkManager() {
+    ChunkManager(Camera3D* cam) {
         double result_value = 0;
-        double fraction = modf(this->CHUNKS_TO_GENERATE, &result_value);
+        modf(CHUNKS_TO_GENERATE, &result_value);
         assert(result_value != 0);
+
+        this->camera_ref = cam;
     }
 
     ~ChunkManager() {
-        for (auto chunk : this->chunks) {
+        for (const auto &chunk : this->chunks) {
             delete chunk;
         }
     }
 
     void GenerateWorld() {
-        int h_map_w = sqrt(this->CHUNKS_TO_GENERATE) * CHUNK_WIDTH;
+        int h_map_w = sqrt(CHUNKS_TO_GENERATE) * CHUNK_WIDTH;
 
         Image perlin_image = GenImagePerlinNoise(h_map_w, h_map_w, 0, 0, 1);
         ImageBlurGaussian(&perlin_image, BASIC_BLUR_SIZE);
@@ -39,8 +43,8 @@ public:
             int chunk_y = chunks_y_count * CHUNK_WIDTH;
 
             Rectangle rect {
-                chunk_x,
-                chunk_y,
+                (float)chunk_x,
+                (float)chunk_y,
                 CHUNK_WIDTH,
                 CHUNK_WIDTH,
             };
@@ -63,31 +67,30 @@ public:
             chunks_generated++;
         }
 
-        std::cout << "Chunks generated: " << chunks_generated << std::endl;
         UnloadImage(perlin_image);
     }
 
-    void Draw() {
-        for (int i = 0; i < CHUNKS_TO_GENERATE; i++) {
-            this->chunks[i]->Draw();
-        }
+    static float CalculateDistance(Vector3 pos1, Vector3 pos2) {
+        return hypot(
+            hypot(
+                pos1.x - pos2.x, pos1.y - pos2.y
+            ),
+            pos1.z - pos2.z
+        );
     }
 
-    void Update() {
-        //for (int i = 0; i < CHUNKS_TO_GENERATE; i++) {
-        //    Vector3 pos = this->chunks[i]->blocks[0].GetPosition();
-        //    float distance = (float)hypot(
-        //        hypot(
-        //            pos.x - this->camera_ref->position.x, pos.y - this->camera_ref->position.y
-        //        ),
-        //        pos.z - this->camera_ref->position.z);
+    void Draw() {
+        for (const auto& chunk : this->chunks) {
+            Vector3 chunk_pos = chunk->blocks[0]->GetPosition();
+            float distance = (float)hypot(
+                        hypot(
+                            chunk_pos.x - this->camera_ref->position.x, chunk_pos.y - this->camera_ref->position.y
+                        ),
+                chunk_pos.z - this->camera_ref->position.z);
 
-        //    if (distance > 100.f) {
-        //        std::cout << "do something" << std::endl;
-        //        return;
-        //    }
-
-        //    this->chunks[i]->Draw();
-        //}
+            if (distance < RENDER_DISTANCE) {
+                chunk->Draw();
+            }
+        }
     }
 };
